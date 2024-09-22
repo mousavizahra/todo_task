@@ -1,6 +1,6 @@
  import { Layout} from "antd";
- import Sidebar from './layout/sidebare'
- import Addtolist from './addtask'
+ import Sidebar from './share/sidebare'
+ import Search from "./search/searchModal";
 
  const {Content} = Layout
 function App() {
@@ -9,7 +9,7 @@ function App() {
       <Layout style={{height:'auto'}}>
       <Sidebar/>
       <Content>
-        <Addtolist/>
+        <Search/>
       </Content>
     </Layout>
     </div>
