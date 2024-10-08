@@ -1,5 +1,4 @@
- // src/redux/slices/todoSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define Todo type
 interface ITodoItem {
@@ -45,8 +44,8 @@ const todoSlice = createSlice({
   },
 });
 
-// Export actions
+ 
 export const { addTodo, deleteTodo, toggleTodo, editTodo } = todoSlice.actions;
 
-// Export the reducer
+ 
 export default todoSlice.reducer;

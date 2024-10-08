@@ -1,53 +1,108 @@
-import { Form, Input, Button, Typography } from 'antd';
+import { useState, SetStateAction } from 'react';
+import { Form, Input, Button, Typography, Card } from 'antd';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { signup } from '../redux/slice/user';
+import texts from '../utils/texts';
+import APP_URLS from '../utils/appurls';
 
-const { Title, Link } = Typography;
+const { Title } = Typography;
 
-const SignUpForm = () => {
-//   const onFinish = (values) => {
-//     console.log('Form values:', values);
-//   };
+function SignupForm() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
+  // Error state for validation
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  /**
+   Validate the form data
+   */
+  const validateForm = (): boolean => {
+    const newErrors = { ...errors };
+
+    // Validate username
+    if (username.trim().length < 3) {
+      newErrors.username = texts.error_signup_username;
+    } else {
+      delete newErrors.username;
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      newErrors.email = texts.error_signup_valid_emailId;
+    } else {
+      delete newErrors.email;
+    }
+
+    setErrors(newErrors);
+    return !Object.keys(newErrors).length;
+  };
+
+  /**
+   handle the form submit button click
+   */
+  const handleSubmit = () => {
+    if (validateForm()) {
+      dispatch(signup({ username, email }));
+      navigate(APP_URLS.TODOS, { state: { fromSignup: true } });
+    }
+  };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#111' }}>
-      <div style={{ width: 300, padding: 20, backgroundColor: '#222', borderRadius: 10 }}>
-        <Title level={3} style={{ color: '#fff', textAlign: 'center' }}>Sign up </Title>
-        <Form
-          name="signup_form"
-        //   onFinish={onFinish}
-          style={{ marginTop: 20 }}
-        >
+    <div style={{ display: 'flex', justifyContent: 'center', marginBlock:'50px',height:'600px' }}>
+      <Card style={{ width: 400 }}>
+        <Title level={3} style={{ textAlign: 'center' }}>
+          Sign up here..
+        </Title>
+
+        <Form layout="vertical" onFinish={handleSubmit} noValidate>
+          {/* Username Field */}
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            label="User Name"
+            validateStatus={errors.username ? 'error' : ''}
+            help={errors.username}
           >
-            <Input placeholder="User Name" />
+            <Input
+              value={username}
+              onChange={(e: { target: { value: SetStateAction<string> } }) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+            />
           </Form.Item>
 
+          {/* Email Field */}
           <Form.Item
-            name="email"
-            rules={[
-              { required: true, message: 'Please input your email!' },
-              { type: 'email', message: 'Please enter a valid email address!' },
-            ]}
+            label="Email"
+            validateStatus={errors.email ? 'error' : ''}
+            help={errors.email}
           >
-            <Input placeholder="Email" />
+            <Input
+              value={email}
+              onChange={(e: { target: { value: SetStateAction<string> } }) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+            />
           </Form.Item>
 
+          {/* Submit Button */}
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
               Sign up
             </Button>
           </Form.Item>
-
-          <Form.Item>
-            <Link href="#" style={{ color: 'red', textAlign: 'center', display: 'block' }}>
-              Click here to Login
-            </Link>
-          </Form.Item>
         </Form>
-      </div>
+
+        <div style={{ textAlign: 'center', marginTop: '10px' }}>
+          <Button type="link">
+            <Link to={APP_URLS.LOGIN}>Click here to Login</Link>
+          </Button>
+        </div>
+      </Card>
     </div>
   );
-};
+}
 
-export default SignUpForm;
+export default SignupForm;

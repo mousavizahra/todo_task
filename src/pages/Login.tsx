@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Input, Button, Form, Typography, message, Space } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,21 +9,18 @@ import APP_URLS from '../utils/appurls';
 
 const { Title } = Typography;
 
-const Login: React.FC = () => {
+function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state: RootState) => state.user.users);
 
   const [username, setUsername] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   /**
-   * To handle login button click
-   * @param e 
+   handle login button click
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleLogin = (e: any) => {
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (validateForm()) {
       dispatch(login({ username }));
@@ -33,8 +30,7 @@ const Login: React.FC = () => {
   };
 
   /**
-   * To validate the form
-   * @returns boolean
+   validate the form
    */
   const validateForm = (): boolean => {
     const newErrors = { ...errors };
@@ -53,11 +49,11 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-      <Space direction="vertical" size="large" style={{ width: '100%', textAlign: 'center' }}>
-        <Title level={3}>Login here..</Title>
+    <div style={{ maxWidth: '500px',  margin:'70px auto',padding:'20px', backgroundColor:'#e0e0e0',height:'500px' }}>
+      <Space direction="vertical" size="large" style={{ width: '100%', textAlign: 'center'}}>
+        <Title level={3}>Login Here</Title>
 
-        <Form layout="vertical" onFinish={handleLogin}>
+        <Form layout="vertical">
           <Form.Item
             label="User Name"
             validateStatus={errors.username ? 'error' : ''}
@@ -66,12 +62,12 @@ const Login: React.FC = () => {
             <Input
               placeholder="Enter your username"
               value={username}
-              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setUsername(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
             />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block onClick={handleLogin}>
               Login
             </Button>
           </Form.Item>
@@ -83,6 +79,6 @@ const Login: React.FC = () => {
       </Space>
     </div>
   );
-};
+}
 
 export default Login;

@@ -1,4 +1,4 @@
-import  {  SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import { Input, Button, List, Typography, Modal, Alert, message } from 'antd';
 import { EditOutlined, DeleteOutlined, SaveOutlined, CloseOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 
 const { Title } = Typography;
 
-const TodoList: React.FC = () => {
+function TodoList() {
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -17,59 +17,44 @@ const TodoList: React.FC = () => {
 
   const [text, setText] = useState('');
   const [editText, setEditText] = useState('');
-  const [editingId, setEditingId] = useState<number | null>(null); // Track the todo being edited
-
-  // State for managing alert message
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [showAlert, setShowAlert] = useState(false);
-
-  //#region User Navigated from sign up
+  
   useEffect(() => {
-    // Check if the user navigated from signup page
     if (location.state?.fromSignup) {
-      setShowAlert(true); // Show alert on first load after signup
+      setShowAlert(true);
       message.success(`Signup successful! Welcome ${user?.username}!`);
     }
   }, [location, user]);
-  //#endregion
 
-  //#region Todo Items Data Manipulation Functions
-  /**
-   * Handles the Add Todo Item functionality
-   */
+  // Handle adding a new todo item
   const handleAddTodo = () => {
-    if (text.trim()) {
-      if (user) {
-        dispatch(addTodo({ id: Date.now(), text, completed: false, username: user?.username }));
-      }
+    if (text.trim() && user) {
+      dispatch(addTodo({ id: Date.now(), text, completed: false, username: user.username }));
       setText('');
     }
   };
 
-  /**
-   * Handles the Edit Todo Item functionality
-   */
+  // Handle editing a todo item
   const handleEditTodo = (id: number) => {
     if (editText.trim()) {
       dispatch(editTodo({ id, text: editText }));
-      setEditingId(null); // Exit edit mode
-      setEditText(''); // Reset input field
+      setEditingId(null);
+      setEditText('');
     }
   };
 
-  /**
-   * Handles the Cancel Edit Todo Item functionality
-   */
+  // Handle canceling the edit of a todo item
   const handleCancelEdit = () => {
     setEditingId(null);
-    setEditText(''); // Reset edit input when canceling
+    setEditText('');
   };
-  //#endregion
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', background: '#f0f2f5', borderRadius: '8px' }}>
-      <Title level={3} style={{ textAlign: 'center' }}>To do's List</Title>
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px', background: '#f0f2f5', borderRadius: '8px' ,height:'650px'}}>
+      <Title level={3} style={{ textAlign: 'center' }}>To-Do List</Title>
       <Input
-        placeholder="New To do"
+        placeholder="New To-Do"
         value={text}
         onChange={(e: { target: { value: SetStateAction<string>; }; }) => setText(e.target.value)}
         onPressEnter={handleAddTodo}
@@ -130,7 +115,7 @@ const TodoList: React.FC = () => {
         )}
       />
 
-      {/* Modal Alert for Success Message */}
+      {/* Modal Alert */}
       <Modal
         title="Signup Successful"
         visible={showAlert}
@@ -141,6 +126,6 @@ const TodoList: React.FC = () => {
       </Modal>
     </div>
   );
-};
+}
 
 export default TodoList;
