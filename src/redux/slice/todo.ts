@@ -1,6 +1,6 @@
  import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Define Todo type
+//  Todo type
 interface ITodoItem {
   id: number;
   text: string;
@@ -8,17 +8,17 @@ interface ITodoItem {
   username: string
 }
 
-// Define the todos state type
+//  todos state type
 interface TodosItemsState {
   todos: ITodoItem[];
 }
 
-// Initial state for the todos slice
+// state for the todos slice
 const initialState: TodosItemsState = {
   todos: [],
 };
 
-// Create the todos slice
+//  todos slice
 const todoSlice = createSlice({
   name: 'todos',
   initialState,

@@ -24,7 +24,7 @@ function Navbar() {
           {user ? (
             <Menu theme="dark" mode="horizontal" selectable={false}>
               <Menu.Item key="todos">
-                <Link to={APP_URLS.TODOS}>To do's</Link>
+                <Link to={APP_URLS.TODOS}>To Do's App</Link>
               </Menu.Item>
             </Menu>
           ) : (

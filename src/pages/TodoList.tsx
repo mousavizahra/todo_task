@@ -27,7 +27,7 @@ function TodoList() {
     }
   }, [location, user]);
 
-  // Handle adding a new todo item
+  //  adding a new todo item
   const handleAddTodo = () => {
     if (text.trim() && user) {
       dispatch(addTodo({ id: Date.now(), text, completed: false, username: user.username }));
@@ -35,7 +35,7 @@ function TodoList() {
     }
   };
 
-  // Handle editing a todo item
+  //  editing a todo item
   const handleEditTodo = (id: number) => {
     if (editText.trim()) {
       dispatch(editTodo({ id, text: editText }));
@@ -44,7 +44,7 @@ function TodoList() {
     }
   };
 
-  // Handle canceling the edit of a todo item
+  // canceling the edit of a todo item
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditText('');

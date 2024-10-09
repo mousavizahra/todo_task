@@ -44,7 +44,7 @@ function SignupForm() {
   };
 
   /**
-   handle the form submit button click
+    form submit button click
    */
   const handleSubmit = () => {
     if (validateForm()) {

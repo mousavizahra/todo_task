@@ -18,7 +18,7 @@ function Login() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   /**
-   handle login button click
+    login button click
    */
   const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
